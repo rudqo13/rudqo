@@ -1,0 +1,975 @@
+{
+  "meta": {
+    "source": "존 J. 머피, 『금융시장의 기술적 분석』 제9장(이동평균)·제10장(오실레이터와 상반된 견해)",
+    "page_range": [
+      220,
+      282
+    ],
+    "note": "원문 요약·재서술. page = 책 본문 쪽수. 'app_note'는 책 내용이 아니라 앱 설계 제안",
+    "schema_version": "1.0"
+  },
+  "principles": [
+    {
+      "id": "ma_is_lagging",
+      "chapter": 9,
+      "page": 222,
+      "rule": "이동평균은 추세추종 장치다. 예측하지 않고 반응만 한다. 곡선 추세선처럼 가격을 완만하게 만들지만 시차(lag)가 생기고, 기간을 줄이면 시차는 줄어도 없어지지 않는다"
+    },
+    {
+      "id": "ma_sensitivity_tradeoff",
+      "chapter": 9,
+      "page": [
+        225,
+        227
+      ],
+      "rule": "단기 이동평균: 신호가 빠르지만 휩소(노이즈 신호)와 거래 비용이 많다. 장기 이동평균: 추세가 활발할 때 잘 맞지만 반전 때는 늦다",
+      "conclusion": "장기평균은 추세 진행 중에, 단기평균은 추세 반전 때 잘 맞는다 → 이동평균 1개보다 2개 조합이 유리"
+    },
+    {
+      "id": "ma_fails_in_range",
+      "chapter": 9,
+      "page": [
+        237,
+        238
+      ],
+      "rule": "이동평균은 추세장에서만 잘 맞는다. 등락 폭이 크거나 보합인 구간(전체 기간의 1/3~1/2)에서는 거의 안 맞는다 → 이 구간엔 오실레이터가 더 적절하고, 판별에는 ADX(15장)를 쓴다",
+      "app_note": "ADX 구현 후 추세/횡보 레짐에 따라 MA·오실레이터 신호 가중치 전환"
+    },
+    {
+      "id": "ma_advantages",
+      "chapter": 9,
+      "page": 237,
+      "items": [
+        "추세 방향으로 매매하게 만든다",
+        "수익은 키우고 손실은 줄인다",
+        "기계적 신호라서 규칙을 지키게 강제한다"
+      ]
+    },
+    {
+      "id": "ma_on_other_data",
+      "chapter": 9,
+      "page": 239,
+      "rule": "이동평균은 OBV, 거래량, 미결제약정, 오실레이터 등 모든 기술적 데이터에 적용할 수 있다"
+    },
+    {
+      "id": "cycle_harmonics",
+      "chapter": [
+        9,
+        10
+      ],
+      "page": [
+        236,
+        271
+      ],
+      "rule": "월간 주기(20~21거래일)를 기준으로 인접 주기는 2배/절반 관계(조화의 원리) → 5·10·20·40일 이동평균과 4·9·18일이 인기 있는 이유. 오실레이터는 주기의 절반 기간을 쓴다 (RSI 14 = 28 달력일의 1/2, 10일 모멘텀 = 20거래일의 1/2)"
+    },
+    {
+      "id": "fibonacci_periods",
+      "chapter": 9,
+      "page": 237,
+      "rule": "피보나치 수 13, 21, 34, 55가 이동평균 기간으로 적합하다. 일봉 21일, 주봉 13주가 유용"
+    },
+    {
+      "id": "centered_ma",
+      "chapter": 9,
+      "page": [
+        235,
+        236
+      ],
+      "rule": "이동평균을 기간의 중간에 두면(10일선은 5일 앞당김) 더 정확하지만 신호가 늦다 → 주기 분석가만 사용. 매매용은 끝점에 표시"
+    },
+    {
+      "id": "optimization",
+      "chapter": 9,
+      "page": [
+        244,
+        245
+      ],
+      "rules": [
+        "최적화 = 시장마다 과거에 가장 잘 맞았던 파라미터를 찾는 것",
+        "데이터를 나눠서, 최적화에 쓰지 않은 표본 밖(out-of-sample) 구간에서 검증해야 한다",
+        "최적화는 성배가 아니다",
+        "소수 시장 전문가는 시도해볼 만하다. 여러 시장이나 수천 종목을 다루면 모든 시장에 같은 파라미터를 쓰는 게 낫다"
+      ],
+      "app_note": "모의매매 백테스트에 in-sample/out-of-sample 분할 옵션 제공 (과최적화 교육)"
+    },
+    {
+      "id": "ma_summary_defaults",
+      "chapter": 9,
+      "page": 245,
+      "items": [
+        "대부분 단순이동평균 2개 조합을 쓴다. 지수이동평균이 더 낫다는 실증 증거는 없다",
+        "선물 일봉 조합: 4·9, 9·18, 5·20, 10·40",
+        "주식: 50일(=10주), 장기는 30주·40주(=200일)",
+        "볼린저 밴드: 20일·20주. 20주 ≈ 100일"
+      ]
+    },
+    {
+      "id": "oscillator_role",
+      "chapter": 10,
+      "page": [
+        248,
+        249
+      ],
+      "rules": [
+        "오실레이터는 기본 추세분석 이후에 쓰는 보조지표",
+        "횡보장에서 가장 유용하다. 추세장에서도 단기 과매수·과매도와 추세 약화(다이버전스)를 경고한다",
+        "큰 움직임 초기에는 오히려 잘못 이끌 수 있고, 움직임 말기에 매우 효과적"
+      ]
+    },
+    {
+      "id": "oscillator_three_uses",
+      "chapter": 10,
+      "page": 250,
+      "items": [
+        "상단·하단 극단값 → 과매수·과매도",
+        "극단 구간에서 가격과의 다이버전스 → 중요한 경고",
+        "제로선(중심선) 교차 → 추세 방향의 매매 신호"
+      ]
+    },
+    {
+      "id": "trend_first",
+      "chapter": 10,
+      "page": [
+        273,
+        274
+      ],
+      "rules": [
+        "먼저 전체 추세를 판단하고, 오실레이터는 진입 타이밍에만 쓴다",
+        "상승추세 + 과매도 → 매수 / 하락추세 + 과매수 → 공매도",
+        "주추세 강세 + 모멘텀 제로선 상향 돌파 → 매수, 약세장 + 하향 돌파 → 매도",
+        "추세를 거슬러 다이버전스만 보고 매매하면 큰 손실로 이어지기 쉽다"
+      ]
+    },
+    {
+      "id": "ignore_oscillator_at_breakout",
+      "chapter": 10,
+      "page": [
+        273,
+        274
+      ],
+      "rule": "횡보 후 돌파 시점엔 오실레이터가 이미 극단값이다. 새 추세 초기엔 오실레이터가 극단에 오래 머물 수 있으니 일단 무시하고 추세분석을 우선한다. 움직임이 성숙하면(엘리엇 5파 등) 오실레이터에 비중을 둔다"
+    },
+    {
+      "id": "first_vs_second_extreme",
+      "chapter": 10,
+      "page": 266,
+      "rule": "과매수·과매도 구간 첫 진입은 경고일 뿐이다. 두 번째 진입에서 새 고점/저점을 못 만들면(오실레이터 2중 천정/바닥) 다이버전스 가능성 → 포지션 보호. 직전 오실레이터 고/저점을 반대로 돌파하면 확인"
+    },
+    {
+      "id": "strong_trend_overbought",
+      "chapter": 10,
+      "page": [
+        265,
+        266
+      ],
+      "rule": "강한 상승추세에선 과매수가 오래 유지될 수 있다. 과매수라는 이유만으로 매수 포지션을 청산하거나 공매도하지 말 것"
+    },
+    {
+      "id": "weekly_daily_integration",
+      "chapter": 10,
+      "page": [
+        278,
+        279
+      ],
+      "rule": "주봉 신호가 일봉 신호보다 중요하다. 주봉으로 추세 방향을, 일봉으로 타이밍을 잡고, 일봉 신호는 주봉 신호와 같은 방향일 때만 채택한다 (특히 MACD·스토캐스틱)",
+      "app_note": "멀티 타임프레임 필터 토글"
+    }
+  ],
+  "indicators": [
+    {
+      "id": "sma",
+      "name_ko": "단순이동평균",
+      "name_en": "Simple Moving Average",
+      "chapter": 9,
+      "page": [
+        220,
+        223
+      ],
+      "formula": "SMA_t = (C_t + C_{t-1} + ... + C_{t-n+1}) / n",
+      "params": {
+        "period": 10,
+        "source": "close"
+      },
+      "source_price_options": [
+        "종가 (가장 일반적)",
+        "(고가+저가)/2 중간값",
+        "(고가+저가+종가)/3",
+        "고가·저가를 따로 평균한 가격 밴드"
+      ],
+      "criticism": [
+        "평균 기간 안의 데이터만 반영한다",
+        "모든 날에 같은 가중치를 준다 (10일 평균이면 각 10%)"
+      ],
+      "code_js": "sma=(a,n)=>a.map((_,i)=>i<n-1?null:a.slice(i-n+1,i+1).reduce((s,x)=>s+x,0)/n)"
+    },
+    {
+      "id": "wma",
+      "name_ko": "선형 가중이동평균",
+      "name_en": "Linearly Weighted Moving Average",
+      "chapter": 9,
+      "page": 224,
+      "formula": "WMA = Σ(w_k·C_k)/Σw_k, 가장 최근 w=n ... 가장 오래된 w=1 (10일이면 분모 55)",
+      "params": {
+        "period": 10
+      },
+      "limitation": "평균 기간 밖의 데이터를 반영하지 못하는 문제는 그대로",
+      "code_js": "wma=(a,n)=>a.map((_,i)=>{if(i<n-1)return null;let s=0;for(let k=0;k<n;k++)s+=a[i-k]*(n-k);return s/(n*(n+1)/2)})"
+    },
+    {
+      "id": "ema",
+      "name_ko": "지수이동평균 (지수완만형 이동평균)",
+      "name_en": "Exponential Moving Average",
+      "chapter": 9,
+      "page": [
+        224,
+        225
+      ],
+      "formula": "EMA_t = α·C_t + (1−α)·EMA_{t-1}",
+      "params": {
+        "alpha_examples": {
+          "0.10": "약 20일에 해당",
+          "0.05": "약 40일에 해당"
+        },
+        "period_to_alpha": "α = 2/(n+1)"
+      },
+      "features": [
+        "최근 데이터에 더 큰 가중치",
+        "과거 데이터 전체를 (점점 작은 가중치로) 반영"
+      ],
+      "evidence": "40일 EMA가 40일 SMA보다 민감하다 (그림 9-2)",
+      "book_example_note": "원문은 '10% 가중치 = 20일, 5% = 40일' 대응으로 설명. 표준 공식 α=2/(n+1)로 보면 19일·39일에 해당",
+      "code_js": "ema=(a,n)=>{const k=2/(n+1);let e=null;return a.map((x,i)=>{e=i===0?x:x*k+e*(1-k);return i<n-1?null:e})}",
+      "app_note": "표준 구현은 첫 값을 SMA로 초기화하는 방식이 많음. 앱 전역에서 하나로 통일할 것"
+    },
+    {
+      "id": "single_ma_crossover",
+      "name_ko": "이동평균 1개 교차",
+      "chapter": 9,
+      "page": [
+        225,
+        227
+      ],
+      "signals": [
+        {
+          "type": "buy",
+          "rule": "종가가 이동평균 위로 상승 마감"
+        },
+        {
+          "type": "sell",
+          "rule": "종가가 이동평균 아래로 하락 마감"
+        }
+      ],
+      "confirmation": "교차 방향으로 이동평균 자체도 전환하면 신호가 강해진다 (그림 9-3: 50일선)",
+      "detection_code": "buy: close[i-1]<=ma[i-1] && close[i]>ma[i] (+옵션: ma[i]>ma[i-1])"
+    },
+    {
+      "id": "double_crossover",
+      "name_ko": "2중 교차법",
+      "name_en": "Double Crossover",
+      "chapter": 9,
+      "page": [
+        227,
+        228
+      ],
+      "params": {
+        "common_pairs": [
+          [
+            5,
+            20
+          ],
+          [
+            10,
+            50
+          ]
+        ],
+        "futures_pairs": [
+          [
+            4,
+            9
+          ],
+          [
+            9,
+            18
+          ],
+          [
+            5,
+            20
+          ],
+          [
+            10,
+            40
+          ]
+        ],
+        "stocks": [
+          10,
+          50
+        ]
+      },
+      "signals": [
+        {
+          "type": "buy",
+          "rule": "단기 MA가 장기 MA를 상향 교차"
+        },
+        {
+          "type": "sell",
+          "rule": "단기 MA가 장기 MA를 하향 교차"
+        }
+      ],
+      "tradeoff": "1개 사용보다 조금 늦지만 휩소 손실이 줄어든다",
+      "app_note": "국내 통용 용어 '골든크로스/데드크로스'로 병기"
+    },
+    {
+      "id": "triple_crossover",
+      "name_ko": "3중 교차법 (4-9-18일)",
+      "name_en": "Triple Crossover",
+      "chapter": 9,
+      "page": [
+        228,
+        231
+      ],
+      "origin": "R. C. 알렌(Allen), 1972·1974년 저서. 5-10-20일의 변형, 주로 선물에서 사용",
+      "params": {
+        "periods": [
+          4,
+          9,
+          18
+        ]
+      },
+      "alignment": {
+        "uptrend": "4일 > 9일 > 18일",
+        "downtrend": "4일 < 9일 < 18일"
+      },
+      "signals": [
+        {
+          "type": "buy_alert",
+          "rule": "하락추세에서 4일선이 9일·18일선을 상향 돌파"
+        },
+        {
+          "type": "buy_confirmed",
+          "rule": "이어서 9일선이 18일선을 상향 돌파"
+        },
+        {
+          "type": "sell_alert",
+          "rule": "4일선이 9일·18일 아래로 하락 (일부는 여기서 매수 포지션 청산)"
+        },
+        {
+          "type": "sell_confirmed",
+          "rule": "9일선이 18일선 아래로 하락 → 공매도"
+        }
+      ],
+      "note": "횡보나 조정 중엔 배열이 섞이지만 큰 추세 판단은 유지. 공격성에 따라 적용 방식에 융통성이 있음"
+    },
+    {
+      "id": "ma_envelope",
+      "name_ko": "이동평균 엔벨로프(띠)",
+      "name_en": "Moving Average Envelopes",
+      "chapter": 9,
+      "page": [
+        232,
+        233
+      ],
+      "formula": "upper = MA×(1+p), lower = MA×(1−p)",
+      "params_presets": [
+        {
+          "use": "단기",
+          "ma": "21일 SMA",
+          "pct": 3
+        },
+        {
+          "use": "장기",
+          "ma": "10주 MA",
+          "pct": 5
+        },
+        {
+          "use": "장기",
+          "ma": "40주 MA",
+          "pct": 10
+        }
+      ],
+      "interpretation": "가격이 밴드에 닿으면 그 방향으로 과도하게 확장된 상태"
+    },
+    {
+      "id": "bollinger_bands",
+      "name_ko": "볼린저 밴드",
+      "name_en": "Bollinger Bands",
+      "developer": "존 볼린저 (John Bollinger)",
+      "chapter": 9,
+      "page": [
+        233,
+        235
+      ],
+      "formula": "middle = SMA(20), upper = middle + 2σ, lower = middle − 2σ (σ = 최근 20개 종가의 표준편차)",
+      "params": {
+        "period": 20,
+        "k": 2,
+        "weekly": "20주",
+        "monthly": "20개월"
+      },
+      "facts": [
+        "±2σ 안에 가격의 약 95%가 포함된다",
+        "엔벨로프와 달리 변동성에 따라 폭이 넓어지고 좁아진다"
+      ],
+      "signals": [
+        {
+          "type": "overbought",
+          "rule": "상단 밴드 터치"
+        },
+        {
+          "type": "oversold",
+          "rule": "하단 밴드 터치"
+        },
+        {
+          "type": "target",
+          "rule": "하단에서 반등해 20일선을 상향 돌파하면 상단 밴드가 목표. 하향 돌파면 하단 밴드가 목표"
+        },
+        {
+          "type": "strong_uptrend",
+          "rule": "강한 상승추세에선 상단 밴드와 20일선 사이에서 움직인다. 20일선 하향 이탈 = 하락 반전 경고"
+        },
+        {
+          "type": "volatility",
+          "rule": "밴드 폭이 매우 넓으면 추세 종료 가능성, 매우 좁으면 새 추세 시작 가능성"
+        }
+      ],
+      "best_used_with": "과매수·과매도 오실레이터 (10장)",
+      "code_js": "bb=(c,n=20,k=2)=>c.map((_,i)=>{if(i<n-1)return null;const w=c.slice(i-n+1,i+1),m=w.reduce((a,b)=>a+b)/n,sd=Math.sqrt(w.reduce((a,b)=>a+(b-m)**2,0)/n);return{mid:m,up:m+k*sd,lo:m-k*sd}})",
+      "app_note": "표준편차는 모집단 표준편차(/n) 사용이 관례"
+    },
+    {
+      "id": "weekly_rule_4week",
+      "name_ko": "4주 규칙 (주간 가격채널 돌파)",
+      "name_en": "4-Week Rule / Donchian Channel",
+      "developer": "리처드 돈키언 (Richard Donchian)",
+      "chapter": 9,
+      "page": [
+        239,
+        244
+      ],
+      "evidence": [
+        "1970년 던 앤 하깃(Dunn & Hargitt)의 『Trader's Notebook』 컴퓨터 검증에서 가장 성공적인 시스템",
+        "루이스 루캑(Louis Lukac): 1975~1984년 검증한 12개 시스템 중 큰 수익을 낸 4개가 채널 돌파 2개, 2선 MA 교차 1개",
+        "루캑·브로슨(Brorsen), The Financial Review 1990년 11월호: 1976~1986년 23개 시스템 비교에서 채널 돌파·MA 시스템이 상위"
+      ],
+      "rules": [
+        {
+          "type": "buy",
+          "rule": "가격이 최근 4주(20일) 최고가를 돌파 → 매도 포지션 청산 후 매수"
+        },
+        {
+          "type": "sell",
+          "rule": "최근 4주 최저가를 하향 돌파 → 매수 포지션 청산 후 공매도"
+        }
+      ],
+      "weakness": "항상 포지션을 들고 있는 연속 시스템이라 비추세 구간에서 양방향 손실(휩소)이 난다. 천정·바닥은 못 잡는다",
+      "non_continuous_variant": "진입은 4주 돌파, 청산은 반대 방향 1주 또는 2주 돌파. 청산 후 다음 4주 돌파까지 관망",
+      "parameter_scaling": "2배/절반 원칙: 더 민감하게 = 2주 → 1주, 더 보수적으로 = 8주",
+      "stop_example": "4주 돌파로 매수하고 보호 스톱은 최근 2주 저점 바로 아래. 급등하면 1주 저점으로 스톱을 좁힌다",
+      "as_filter": "MA 교차 신호를 같은 방향의 2주 돌파로 확인하는 필터로도 쓸 수 있다",
+      "params": {
+        "entry_weeks": 4,
+        "exit_weeks": [
+          1,
+          2
+        ],
+        "daily_equiv_days": 20
+      },
+      "timeframes": [
+        "일봉",
+        "주봉",
+        "월봉 (그림 9-12: S&P 500, 1995년 초 월간 채널 돌파 후 3년간 매수 유지)"
+      ],
+      "code_js": "hh=Math.max(...high.slice(i-20,i)); ll=Math.min(...low.slice(i-20,i)); buy= close[i]>hh; sell= close[i]<ll",
+      "app_note": "모의매매 '규칙 기반 시스템' 첫 예제로 적합 (단순·검증됨)"
+    },
+    {
+      "id": "adaptive_moving_average",
+      "name_ko": "적응형 이동평균 (AMA/KAMA)",
+      "name_en": "Adaptive Moving Average",
+      "developer": "페리 코프먼 (Perry Kaufman), 『Smarter Trading』",
+      "chapter": 9,
+      "page": [
+        245,
+        246
+      ],
+      "concept": "시장 노이즈에 따라 속도가 자동 조절된다. 횡보장에선 느리게, 추세장에선 빠르게",
+      "efficiency_ratio": "ER = 방향성 / 변동성. ER이 높으면 빠른 평균, 낮으면 느린 평균에 가까워진다",
+      "formula_standard": "ER = |C_t − C_{t−n}| / Σ|C_i − C_{i−1}|; SC = [ER·(2/(f+1) − 2/(s+1)) + 2/(s+1)]²; AMA_t = AMA_{t−1} + SC·(C_t − AMA_{t−1})",
+      "params_standard": {
+        "n": 10,
+        "fast": 2,
+        "slow": 30
+      },
+      "formula_source_note": "책에는 개념만 있음. 공식·파라미터는 코프먼 표준 정의 (앱 설계용 보충)"
+    },
+    {
+      "id": "momentum",
+      "name_ko": "모멘텀",
+      "name_en": "Momentum",
+      "chapter": 10,
+      "page": [
+        250,
+        255
+      ],
+      "formula": "M = C_t − C_{t−n}",
+      "params": {
+        "period": 10,
+        "variants": [
+          5,
+          40
+        ],
+        "weekly_example": "13주"
+      },
+      "measures": "가격 수준이 아니라 가격 변화의 속도(가속·감속)",
+      "interpretation": [
+        "제로선 위에서 상승 = 상승 가속",
+        "수평 = 상승 속도 일정",
+        "제로선 쪽으로 하락 = 가격은 오르지만 상승 둔화",
+        "제로선 아래 = 단기 하락추세 (10일 MA도 하락 시작)"
+      ],
+      "leading": "구조상 가격보다 한발 앞선다. 모멘텀 차트 위 추세선이 가격 추세선보다 먼저 깨진다 (그림 10-2a)",
+      "signals": [
+        {
+          "type": "buy",
+          "rule": "제로선 상향 교차 (상승추세일 때만)"
+        },
+        {
+          "type": "sell",
+          "rule": "제로선 하향 교차 (하락추세일 때만)"
+        }
+      ],
+      "limitation": "고정된 상하한이 없다 → 과거 극단값에 수평선을 그어 경계로 쓰고, 큰 추세 변화 후엔 다시 조정",
+      "period_effect": "짧을수록 민감, 길수록 완만. 큰 전환을 잡는 데는 장기(40일)가 효과적 (그림 10-1b)",
+      "code_js": "mom=(c,n=10)=>c.map((x,i)=>i<n?null:x-c[i-n])",
+      "app_note": "상하한이 없으니 과거 N일 백분위(예: 상위/하위 5%)로 동적 경계 표시"
+    },
+    {
+      "id": "roc",
+      "name_ko": "변화율",
+      "name_en": "Rate of Change",
+      "chapter": 10,
+      "page": 256,
+      "formula": "ROC = 100 × (C_t / C_{t−n})  (중심선 100)",
+      "params": {
+        "period": 10
+      },
+      "variant_note": "소프트웨어마다 공식이 다르다. 흔한 변형은 100×(C_t − C_{t−n})/C_{t−n} (중심선 0). 해석은 같다",
+      "code_js": "roc=(c,n=10)=>c.map((x,i)=>i<n?null:100*x/c[i-n])"
+    },
+    {
+      "id": "ma_oscillator",
+      "name_ko": "이동평균 오실레이터 (두 MA 차이 히스토그램)",
+      "name_en": "Moving Average Oscillator",
+      "chapter": 10,
+      "page": [
+        256,
+        258
+      ],
+      "formula": "OSC = MA_short − MA_long (또는 비율 MA_short / MA_long)",
+      "params_examples": [
+        [
+          10,
+          50
+        ],
+        {
+          "weekly": [
+            10,
+            40
+          ]
+        }
+      ],
+      "uses": [
+        "다이버전스 포착",
+        "단기 MA가 장기 MA에서 너무 멀어진 단기 극단 확인",
+        "제로선 교차 = MA 교차 시점"
+      ],
+      "rules": [
+        "너무 벌어지면 추세가 잠시 멈춘다 (단기선이 장기선으로 돌아올 때까지)",
+        "상승추세에서 단기선이 장기선에 접근한 뒤 다시 올라가면 매수 영역 (추세선 시험과 비슷). 하향 교차하면 반전",
+        "하락추세에서 단기선이 장기선까지 올라와도 교차하지 못하면 매도 영역",
+        "히스토그램은 실제 교차 전에 먼저 방향을 바꾼다"
+      ]
+    },
+    {
+      "id": "cci",
+      "name_ko": "CCI (상품채널지수)",
+      "name_en": "Commodity Channel Index",
+      "developer": "도널드 램버트 (Donald R. Lambert)",
+      "chapter": 10,
+      "page": [
+        258,
+        261
+      ],
+      "formula_concept": "현재 가격과 20일 이동평균의 차이를 평균편차 기반 상수로 나눠 표준화",
+      "formula_standard": "TP = (H+L+C)/3; CCI = (TP − SMA(TP,n)) / (0.015 × MeanDev(TP,n))",
+      "formula_source_note": "책은 개념만 설명. 0.015 상수와 TP 공식은 램버트 표준 정의 (보충)",
+      "params": {
+        "period": 20
+      },
+      "signals": [
+        {
+          "type": "lambert_original",
+          "rule": "+100 위 → 매수, −100 아래 → 공매도"
+        },
+        {
+          "type": "common_usage",
+          "rule": "+100 위 = 과매수, −100 아래 = 과매도"
+        }
+      ],
+      "note": "상품 선물용으로 개발됐지만 주가지수에도 쓸 수 있다. 가격 고점·저점보다 먼저 방향을 바꾼다 (그림 10-9)"
+    },
+    {
+      "id": "rsi",
+      "name_ko": "상대강도지수",
+      "name_en": "Relative Strength Index",
+      "developer": "J. 웰스 와일더 (J. Welles Wilder), 1978 『New Concepts in Technical Trading Systems』",
+      "chapter": 10,
+      "page": [
+        260,
+        267
+      ],
+      "formula": "RSI = 100 − 100/(1+RS), RS = n일 상승폭 평균 / n일 하락폭 평균",
+      "book_calc": "책 설명: 14일 중 상승일 상승폭 합 ÷ 14, 하락일 하락폭 합 ÷ 14",
+      "standard_smoothing": "와일더 원 구현은 평활: avg_t = (avg_{t−1}×(n−1) + 당일값)/n. 대부분 차트 프로그램도 이 방식 (보충)",
+      "params": {
+        "period": 14,
+        "weekly": "14주",
+        "common": [
+          9,
+          14
+        ],
+        "sensitive": [
+          5,
+          7
+        ],
+        "smooth": [
+          21,
+          28
+        ]
+      },
+      "why_designed": "모멘텀의 두 문제 해결: ① n일 전 급변이 만드는 왜곡 → 평활화 ② 고정 범위 부재 → 0~100 범위",
+      "naming_caution": "이름과 달리 두 종목 간 '상대강도(비율선)'를 측정하지 않는다",
+      "levels": {
+        "overbought": 70,
+        "oversold": 30,
+        "bull_market_overbought": 80,
+        "bear_market_oversold": 20,
+        "midline": 50
+      },
+      "period_effect": "짧을수록 진폭이 커지고 극단에 자주 닿는다 (7일 > 14일, 그림 10-11)",
+      "signals": [
+        {
+          "type": "failure_swing_top",
+          "rule": "70 위 RSI 고점이 직전 RSI 고점을 못 넘고, 이어서 중간 RSI 저점을 하향 돌파 → 천정 신호"
+        },
+        {
+          "type": "failure_swing_bottom",
+          "rule": "30 아래 RSI 저점이 직전 RSI 저점보다 높고, 중간 RSI 고점을 상향 돌파 → 바닥 신호"
+        },
+        {
+          "type": "divergence",
+          "rule": "70 위/30 아래에서 가격과 RSI가 반대로 움직임. 와일더는 'RSI의 가장 독특한 특징'이라고 함"
+        },
+        {
+          "type": "level_cross",
+          "rule": "30 아래에서 다시 30 상향 교차 → 매수 / 70 위에서 70 하향 교차 → 매도"
+        },
+        {
+          "type": "midline",
+          "rule": "50선은 조정 시 지지, 반등 시 저항. 50 상향/하향 교차를 매수/매도로 쓰는 사람도 있다"
+        },
+        {
+          "type": "trendline",
+          "rule": "RSI 선 위에 추세선이나 이동평균을 그려 추세 변화를 포착"
+        }
+      ],
+      "author_view": "머피가 보는 가장 큰 가치는 70 위/30 아래에서의 실패 스윙과 다이버전스",
+      "code_js": "rsi=(c,n=14)=>{let g=0,l=0,out=Array(c.length).fill(null);for(let i=1;i<c.length;i++){const d=c[i]-c[i-1],u=Math.max(d,0),v=Math.max(-d,0);if(i<=n){g+=u;l+=v;if(i===n){g/=n;l/=n;out[i]=l===0?100:100-100/(1+g/l)}}else{g=(g*(n-1)+u)/n;l=(l*(n-1)+v)/n;out[i]=l===0?100:100-100/(1+g/l)}}return out}"
+    },
+    {
+      "id": "stochastic",
+      "name_ko": "스토캐스틱",
+      "name_en": "Stochastics",
+      "developer": "조지 레인 (George Lane)이 대중화",
+      "chapter": 10,
+      "page": [
+        268,
+        270
+      ],
+      "premise": "상승장에선 종가가 기간 가격 범위의 위쪽에, 하락장에선 아래쪽에 가까워지는 경향",
+      "formula": "%K = 100 × (C − L14)/(H14 − L14); %D = SMA(%K, 3)",
+      "variants": {
+        "fast": "%K와 %D(=%K의 3기간 평균)",
+        "slow": "Fast %D를 새 %K로 쓰고, 그 3기간 평균을 새 %D로. 대부분 slow를 쓴다 (신뢰도↑)"
+      },
+      "params": {
+        "k_period": 14,
+        "d_period": 3,
+        "slowing": 3,
+        "timeframes": [
+          "일",
+          "주",
+          "월",
+          "데이트레이딩"
+        ]
+      },
+      "levels": {
+        "overbought": 80,
+        "oversold": 20
+      },
+      "importance": "%D가 더 중요하다",
+      "signals": [
+        {
+          "type": "bearish_divergence",
+          "rule": "%D가 80 위에서 가격은 계속 오르는데 %D는 고점 2개가 낮아짐"
+        },
+        {
+          "type": "bullish_divergence",
+          "rule": "%D가 과매도 구간에서 가격은 계속 내리는데 %D는 저점 2개가 높아짐",
+          "ocr_note": "원문은 '30 이하'로 표기됨. 스토캐스틱 과매도 기준은 20이라 오기 가능성이 있어 원문을 그대로 유지하고 표시만 해둠"
+        },
+        {
+          "type": "trigger",
+          "rule": "실제 매매 신호는 빠른 %K가 느린 %D와 교차할 때. 80 위 하향 교차 = 매도, 20 아래 상향 교차 = 매수 (그림 10-15)"
+        }
+      ],
+      "combine": [
+        "주봉 스토캐스틱으로 방향, 일봉으로 타이밍",
+        "RSI와 병행: 둘 다 극단일 때 가장 좋은 신호 (그림 10-17. RSI가 덜 출렁이고 극단에 덜 닿음)"
+      ],
+      "code_js": "stochK=(h,l,c,n=14)=>c.map((x,i)=>{if(i<n-1)return null;const H=Math.max(...h.slice(i-n+1,i+1)),L=Math.min(...l.slice(i-n+1,i+1));return H===L?50:100*(x-L)/(H-L)})"
+    },
+    {
+      "id": "williams_r",
+      "name_ko": "윌리엄스 %R",
+      "name_en": "Williams %R",
+      "developer": "래리 윌리엄스 (Larry Williams)",
+      "chapter": 10,
+      "page": [
+        270,
+        272
+      ],
+      "formula": "%R = 100 × (Hn − C)/(Hn − Ln)",
+      "ocr_note": "원문 '전체 일수로 나눈다'는 '전체 가격범위(Hn−Ln)로 나눈다'의 오역·오기로 보고 정규화함",
+      "orientation": "고점에서 빼기 때문에 스토캐스틱이 위아래로 뒤집힌 모양 → 차트 프로그램은 보통 뒤집어서 표시(흔히 −100~0 스케일)",
+      "levels": {
+        "extreme_high": 80,
+        "extreme_low": 20,
+        "note": "뒤집은 표시 기준 80 위/20 아래가 극단 (그림 10-18)"
+      },
+      "signals": "다른 오실레이터와 같다. 과매수·과매도 구간의 다이버전스가 핵심",
+      "code_js": "willR=(h,l,c,n=14)=>c.map((x,i)=>{if(i<n-1)return null;const H=Math.max(...h.slice(i-n+1,i+1)),L=Math.min(...l.slice(i-n+1,i+1));return H===L?-50:-100*(H-x)/(H-L)})",
+      "params": {
+        "period": "책에 명시 없음. 관례 14 (보충)"
+      }
+    },
+    {
+      "id": "macd",
+      "name_ko": "MACD (이동평균 수렴·확산)",
+      "name_en": "Moving Average Convergence Divergence",
+      "developer": "제럴드 애펠 (Gerald Appel)",
+      "chapter": 10,
+      "page": [
+        274,
+        276
+      ],
+      "formula": "MACD = EMA(12) − EMA(26); Signal = EMA(MACD, 9)",
+      "params": {
+        "fast": 12,
+        "slow": 26,
+        "signal": 9,
+        "weekly": "12·26·9주"
+      },
+      "note": "애펠은 매수·매도에 다른 파라미터를 추천했지만 대부분 12-26-9를 공통으로 쓴다",
+      "signals": [
+        {
+          "type": "buy",
+          "rule": "MACD선이 시그널선을 상향 교차"
+        },
+        {
+          "type": "sell",
+          "rule": "MACD선이 시그널선을 하향 교차"
+        },
+        {
+          "type": "best_buy",
+          "rule": "제로선 아래(과매도)에서 발생한 매수 교차가 가장 좋다",
+          "ocr_note": "원문 '가격이 제로선 아래'는 'MACD선이 제로선 아래'로 정규화"
+        },
+        {
+          "type": "zero_cross",
+          "rule": "제로선 상향/하향 교차도 매수/매도 신호 (모멘텀과 유사)"
+        },
+        {
+          "type": "bearish_divergence",
+          "rule": "MACD가 제로선 위(과매수)에서, 가격은 오르는데 MACD는 약해짐 → 천정 예고"
+        },
+        {
+          "type": "bullish_divergence",
+          "rule": "MACD가 제로선 아래(과매도)에서 가격보다 먼저 오르기 시작 → 바닥 조기 신호"
+        },
+        {
+          "type": "trendline",
+          "rule": "MACD선에 추세선을 그어 추세 전환 확인"
+        }
+      ],
+      "overbought_oversold": "제로선에서 위/아래로 너무 멀어지면 과매수/과매도",
+      "code_js": "macd=c=>{const f=ema(c,12),s=ema(c,26),m=c.map((_,i)=>f[i]!=null&&s[i]!=null?f[i]-s[i]:null);/* signal = ema(m의 non-null 구간, 9) */}"
+    },
+    {
+      "id": "macd_histogram",
+      "name_ko": "MACD 히스토그램",
+      "name_en": "MACD Histogram",
+      "chapter": 10,
+      "page": [
+        276,
+        278
+      ],
+      "formula": "Hist = MACD − Signal",
+      "rules": [
+        "Hist > 0 ⇔ MACD가 시그널 위. 제로선 교차 = MACD 교차 신호와 일치",
+        "실제 가치: 두 선의 간격이 벌어지는지 좁아지는지를 보여준다",
+        "양수 구간에서 제로선 쪽으로 줄어들면 상승추세 약화, 음수 구간에서 제로선 쪽으로 올라오면 하락추세 약화",
+        "히스토그램 전환은 항상 실제 교차보다 앞선다 → 기존 포지션 조기 청산 신호로 적합",
+        "히스토그램 전환만 보고 우세 추세를 거슬러 신규 진입하는 것은 매우 위험"
+      ],
+      "example": "그림 10-20b 주봉: 중간 고점에서 매도 신호 10주 전에 하락 전환, 상승 전환 2번은 매수 신호 2~4주 전에 전환",
+      "app_note": "'청산 경고' 전용 신호로 분류하고, '진입 신호'로 쓰지 못하게 UI에서 구분"
+    }
+  ],
+  "contrary_opinion": {
+    "id": "contrary_opinion",
+    "chapter": 10,
+    "page": [
+      279,
+      282
+    ],
+    "kr_stock_applicability": "원문은 선물 중심. 국내 주식은 공포·탐욕 지수, 투자자별 매매동향, 신용잔고 등으로 개념을 응용할 수 있음 (앱 설계 제안)",
+    "definition": "다수가 한쪽 의견으로 쏠리면 대체로 틀린다. 진정한 소수파는 다수가 무엇을 하는지 먼저 파악하고 반대로 움직인다",
+    "classification": "기술적 분석으로 분류되지만 사실상 심리적 분석",
+    "origin": [
+      "험프리 닐(Humphrey Neill), 1954 『The Art of Contrary Thinking』",
+      "제임스 시벳(James Sibbet), 1964 Market Vane 자문서비스, 강세여론지수(Bullish Consensus)"
+    ],
+    "bullish_consensus": {
+      "survey": "상품 선물 전문가·투자정보지를 대상으로 매주 조사",
+      "consensus_index": "Consensus National Commodity Futures Weekly의 강세의견 지수, 매주 금요일 발표",
+      "levels": {
+        "neutral": 55,
+        "warning_high": 75,
+        "warning_low": 25,
+        "extreme_high": 90,
+        "extreme_low": 20
+      },
+      "rules": [
+        "75% 이상 = 과매수, 천정 임박 / 25% 이하 = 과매도, 바닥 근처",
+        "역발상 포지션은 90% 이상이나 20% 이하에서 고려. 75/25는 경고 구간",
+        "역행하기 전에 지수 자체의 추세 전환을 기다린다. 위험 구간에서의 방향 전환을 주시",
+        "균형점이 55%인 이유: 일반 대중의 기본 강세 성향 반영"
+      ]
+    },
+    "logic": [
+      {
+        "name": "잔존 매수·매도 세력",
+        "rule": "80~90%가 이미 강세 포지션이면 가격을 더 밀어 올릴 매수 자금이 남아 있지 않다"
+      },
+      {
+        "name": "강세 대 약세 세력",
+        "rule": "제로섬: 80%가 매수면 20%의 매도자가 1인당 4배 포지션을 흡수한다. 소수 쪽이 자금력 있는 강한 세력, 다수는 급변 시 청산당하는 약한 세력"
+      }
+    ],
+    "open_interest": [
+      "미결제약정이 클수록 역발상 포지션에 유리",
+      "단, 미결제약정이 계속 늘면 추세가 지속될 확률이 높으니 증가율이 0 근처나 마이너스가 될 때까지 대기",
+      "대부분의 미결제약정을 약한 세력(투기자)이 보유할 때 더 잘 맞는다. 대규모 헤저와 반대로 거래하는 건 현명하지 않다"
+    ],
+    "news_reaction": "과매수 구간에서 호재에도 가격이 못 오르면 전환 임박 경고. 과매도(20% 이하) 구간에서 악재에도 못 내리면 악재가 이미 가격에 반영된 것",
+    "combine": "극단에 도달하기 전까지는 여론 추세와 같은 방향으로 거래하고, 극단에서는 지지/저항·추세선·MA 돌파와 오실레이터 다이버전스로 전환을 확인한다",
+    "investor_sentiment": "배런스(Barron's) 'Market Laboratory' 면의 투자자 심리 지수 (PDF가 여기서 끊겨서 이후 내용은 미추출)"
+  },
+  "ocr_normalization": [
+    [
+      "지수완만형 이동평균",
+      "지수이동평균(EMA)"
+    ],
+    [
+      "상품선물경로지수",
+      "CCI(상품채널지수, Commodity Channel Index)"
+    ],
+    [
+      "적합이동평균",
+      "적응형 이동평균(AMA)"
+    ],
+    [
+      "상대적 강세지수",
+      "상대강도지수(RSI)"
+    ],
+    [
+      "변동실패",
+      "실패 스윙(failure swing)"
+    ],
+    [
+      "이탈",
+      "다이버전스(divergence)"
+    ],
+    [
+      "돈시안/돈치안",
+      "돈키언(Donchian)"
+    ],
+    [
+      "던 앤 하겟/하킷",
+      "던 앤 하깃(Dunn & Hargitt)"
+    ],
+    [
+      "루캐",
+      "루캑(Lukac)"
+    ],
+    [
+      "브로슨",
+      "브로슨(Brorsen)"
+    ],
+    [
+      "메릴린치(Merrill Linch)",
+      "메릴린치(Merrill Lynch)"
+    ],
+    [
+      "성배(壓移)",
+      "성배(聖杯)"
+    ],
+    [
+      "이동평균 시장을 따라가며",
+      "이동평균은 시장을 따라가며"
+    ],
+    [
+      "조금한 매수신호",
+      "조급한 매수신호"
+    ],
+    [
+      "20일의 2배이이다",
+      "20일의 2배이다"
+    ],
+    [
+      "보험상태에서",
+      "보수적으로 (문맥상 추정)"
+    ],
+    [
+      "요즘 가운데 하나",
+      "요점 가운데 하나"
+    ],
+    [
+      "상승하락 스토캐스틱",
+      "위아래가 뒤집힌 스토캐스틱"
+    ],
+    [
+      "%R: 전체 일수로 나눈다",
+      "전체 가격범위로 나눈다"
+    ],
+    [
+      "배런(Barron)연구소",
+      "배런스(Barron's)지"
+    ],
+    [
+      "교차 → 중심선",
+      "중심선(제로선)"
+    ]
+  ]
+}
